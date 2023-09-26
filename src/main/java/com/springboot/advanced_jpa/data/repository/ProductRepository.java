@@ -2,6 +2,7 @@ package com.springboot.advanced_jpa.data.repository;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.springboot.advanced_jpa.data.entity.Product;
@@ -20,7 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
     // exists...By     특정 데이터가 존재하는지 확인하는 키워드, 리턴 타입으로 boolean 타입 사용
-    boolean exexistsByNumber(Long number);
+    boolean existsByNumber(Long number);
 
     // count...By 조회 쿼리를 수행한 후 쿼리 결과로 나온 레코드의 개수를 리턴
 
@@ -88,5 +89,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByNameEndsWith(String name);
     List<Product> findByNameEndingWith(String name);
     List<Product> findByNameIsEndingWith(String name);
+
+    //정렬 처리하기
+    // Asc: 오름차순, Dsec: 내림차순
+    List<Product> findByNameOrderByNumberAsc(String name);
+    List<Product> findByNameOrderByNumberDesc(String name);
+
+    // 쿼리 메소드에서 여러 정렬 기준 사용
+    //And 를 붙이지 않음
+    List<Product> findByNameOrderByPriceAscStockDesc(String name);
+
+    // 매개변수를 활용한 쿼리 정렬
+    List<Product> findByName(String name, Sort sort);
     
 }
