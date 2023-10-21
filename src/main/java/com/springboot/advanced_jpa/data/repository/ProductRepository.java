@@ -2,8 +2,12 @@ package com.springboot.advanced_jpa.data.repository;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.springboot.advanced_jpa.data.entity.Product;
 import java.util.List;
@@ -101,5 +105,22 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // 매개변수를 활용한 쿼리 정렬
     List<Product> findByName(String name, Sort sort);
+
+    // 페이징 처리
+    Page<Product> findByName(String name, Pageable pageable);
+
+    //@Query 어노테이션 사용하기
+    //? 뒤 1은 첫번째 파라미터를 의미한다. 하지만 이 같은 방식을 사용할 경우 파라미터의 순서가 바뀌면 오류가 발생할 
+    // 가능성이 있어 @Param 어노테이션을 사용하는 것이 좋다.
+    @Query("SELECT p FROM Product AS p WHERE p.name = ?1")
+    List<Product> findByName1(String name);
+    
+    //@Query 어노테이션과 @Param 어노테이션을 사용한 메소드
+    @Query("SELECT p FROM Product p WHERE p.name = :name")
+    List<Product> findByNameParam(@Param("name") String name);
+
+    //특정 칼럼만 추출하는 쿼리
+    @Query("SELECT p.name, p.price, p.stock FROM Product p WHERE p.name = :name")
+    List<Object[]> findByNameParam2(@Param("name") String name);
     
 }
