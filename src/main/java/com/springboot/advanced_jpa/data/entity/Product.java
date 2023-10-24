@@ -3,18 +3,22 @@ package com.springboot.advanced_jpa.data.entity;
 import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(callSuper = true) //callSuper : 부모클래스의 필드를 포함하는 역할
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "product")
-public class Product {
+public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long number;
@@ -30,9 +34,7 @@ public class Product {
 
     
 
-    private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
 
 
     
